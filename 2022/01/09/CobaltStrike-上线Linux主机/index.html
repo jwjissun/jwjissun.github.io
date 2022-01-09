@@ -150,7 +150,7 @@
 <p>查看导出位置，生成了linux-test，文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">╭─wulala@wulaladeMacBook-Pro /tmp</span><br><span class="line">╰─$ ls -l</span><br><span class="line">-rwxr-xr-x  1 wulala  wheel  1363808  1  9 20:19 linux-test</span><br><span class="line">-rwxr-xr-x  1 wulala  wheel  2725144  1  9 20:19 linux-test.lib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>讲文件上传到linux服务器，然后./执行。</p>
+<p>将文件上传到linux服务器，然后./执行。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@wulala:/home<span class="comment"># ./linux-test  </span></span><br><span class="line">root@wulala:/home<span class="comment"># ps -ef | grep linux-test  </span></span><br><span class="line">root     24241     1 54 20:23 ?        00:00:03 ./linux-test</span><br><span class="line">root     24249  2832  0 20:23 pts/0    00:00:00 grep linux-test</span><br><span class="line">root@wulala:/home<span class="comment"># </span></span><br></pre></td></tr></table></figure>
 
 <p>成功上线</p>
